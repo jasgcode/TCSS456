@@ -1,16 +1,9 @@
-# Python-generated files
-__pycache__/
-*.py[oc]
-build/
-dist/
-wheels/
-*.egg-info
-
-# Virtual environments
-.venv
-
-# node_modules
-node_modules/
-
-.env 
-uv.lock
+node_modules
+dist
+out
+.DS_Store
+.eslintcache
+*.log*
+.env
+.editorconfig
+pyproject.toml

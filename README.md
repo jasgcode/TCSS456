@@ -1,3 +1,27 @@
-### Sassy P.A
+## Project Setup
 
-Make sure to have uv installed then create a venv that uses python 3.10, once you do that do uv sync.
+### Install
+Install uv python package manager too
+```bash
+$ npm install
+$ uv sync
+```
+
+### Development
+
+```bash
+$ npm run dev
+```
+
+### Build
+
+```bash
+# For windows
+$ npm run build:win
+
+# For macOS
+$ npm run build:mac
+
+# For Linux
+$ npm run build:linux
+```
