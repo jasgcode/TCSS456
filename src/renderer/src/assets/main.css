@@ -17,6 +17,39 @@ body {
   margin-bottom: 80px;
 }
 
+.app-layout {
+  display: flex;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+}
+
+.robot-side {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--ev-c-black-soft);
+}
+
+.robot-animation {
+  max-width: 90%;
+  max-height: 90%;
+  object-fit: contain;
+}
+
+.chat-side {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  align-items: center;
+  padding: 20px;
+  box-sizing: border-box;
+  background: var(--color-background);
+}
+
+
 .message-container {
   width: 100%;
   height: 600px;

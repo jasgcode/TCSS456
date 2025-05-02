@@ -36,29 +36,33 @@ function App(): React.JSX.Element {
   }, [messages]); // Run this effect whenever messages change
 
   return (
-    <>
-      {/* Message container (Chat UI) */}
-      <div className="message-container" ref={messageContainerRef}>
-        {messages.map((msg, index) => (
-          <div key={index} className="message">
-            {msg}
-          </div>
-        ))}
+    <div className="app-layout">
+      {/* Left Side: Robot Animation */}
+      <div className="robot-side">
+        <img src="/robot.gif" alt="Robot" className="robot-animation" />
       </div>
-
-      {/* Text input area */}
-      <textarea
-        className="input-box"
-        placeholder="Ask me anything..."
-        value={message}
-        onChange={(e) => setMessage(e.target.value)}
-        onKeyDown={handleKeyDown}
-        onInput={handleInput} // Dynamically adjust height on input
-        ref={textAreaRef} // Reference for the textarea element
-      />
-    </>
+  
+      {/* Right Side: Chat UI */}
+      <div className="chat-side">
+        <div className="message-container" ref={messageContainerRef}>
+          {messages.map((msg, index) => (
+            <div key={index} className="message">{msg}</div>
+          ))}
+        </div>
+  
+        <textarea
+          className="input-box"
+          placeholder="Ask me anything..."
+          value={message}
+          onChange={(e) => setMessage(e.target.value)}
+          onKeyDown={handleKeyDown}
+          onInput={handleInput}
+          ref={textAreaRef}
+        />
+      </div>
+    </div>
   );
 }
 
-export default App;
+  export default App;
 
