@@ -1,5 +1,4 @@
 import { useState, useRef, useEffect } from 'react';
-import electronLogo from './assets/electron.svg';
 
 function App(): React.JSX.Element {
   const [message, setMessage] = useState('');
@@ -9,22 +8,26 @@ function App(): React.JSX.Element {
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
     if (e.key === 'Enter' && !e.shiftKey) {
-      e.preventDefault(); // Prevent newline on Enter
+      e.preventDefault(); // Prevent newline
       if (message.trim()) {
-        // Add the new message at the bottom
         setMessages([...messages, message]);
-        setMessage(''); // Clear the input field
+        setMessage(''); // Clear input
+  
+        // Reset textarea height
+        if (textAreaRef.current) {
+          textAreaRef.current.style.height = '75px'; // Match your min-height
+        }
       }
     }
-  };
+  };  
 
   const handleInput = () => {
     if (textAreaRef.current) {
-      textAreaRef.current.style.height = 'auto'; // Reset height to auto to calculate new height
-      textAreaRef.current.style.height = `${textAreaRef.current.scrollHeight}px`; // Set height based on scrollHeight
+      textAreaRef.current.style.height = 'auto'; // Reset height
+      textAreaRef.current.style.height = `${textAreaRef.current.scrollHeight}px`; // Set to scroll height
     }
   };
-
+  
   // Scroll to the bottom to show the newest message
   useEffect(() => {
     if (messageContainerRef.current) {
