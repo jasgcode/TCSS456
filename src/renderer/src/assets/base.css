@@ -30,7 +30,7 @@
 
 :root {
   --color-background: var(--ev-c-green);
-  --color-background-soft: var(--ev-c-black-soft);
+  --color-background-soft: var(--ev-c-green-soft);
   --color-background-mute: var(--ev-c-black-mute);
 
   --color-text: var(--ev-c-brown);
