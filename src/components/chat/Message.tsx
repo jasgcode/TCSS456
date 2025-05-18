@@ -1,13 +1,15 @@
 import React from 'react';
+import { MessageProps } from '../types'
 
-interface MessageProps {
-  content: string;
-}
 
-// Prevent re-renders if content hasn't changed
-const Message: React.FC<MessageProps> = React.memo(({ content }) => {
+const Message: React.FC<MessageProps> = React.memo(({ content, role }) => {
+  // Determine the className based on the role
+  const messageClass = role === 'model' ? 'message_model' : 'message';
+
   return (
-    <div className="message">{content}</div>
+    <div className={messageClass}>
+      {content}
+    </div>
   );
 });
 

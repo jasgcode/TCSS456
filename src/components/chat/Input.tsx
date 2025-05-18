@@ -1,12 +1,5 @@
-// Input.tsx
 import React, { useRef, useEffect } from 'react';
-
-interface InputProps {
-  message: string;
-  setMessage: React.Dispatch<React.SetStateAction<string>>;
-  onSendMessage: () => void;
-}
-
+import { InputProps } from '../types';
 const Input: React.FC<InputProps> = ({ message, setMessage, onSendMessage }) => {
   const textAreaRef = useRef<HTMLTextAreaElement | null>(null);
 
@@ -31,7 +24,7 @@ const Input: React.FC<InputProps> = ({ message, setMessage, onSendMessage }) => 
     }
   };
 
-  return (
+  return (  
     <textarea
       className="input-box"
       placeholder="Ask me anything..."
