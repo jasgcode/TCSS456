@@ -50,7 +50,9 @@ except Exception as e:
     
     
 origins = [
-    'https://localhost:5173'
+    'http://localhost:5173',
+    'https://localhost:5173',  # Keep both just in case
+    'http://localhost:3000',   # Common React dev server port
 ]
 
 app.add_middleware(

@@ -68,11 +68,18 @@ class ChatBot:
             print("LLM not loaded. Cant generate respone")
             return "Model not found cant do stuff lol"
         
+        system_prompt = {
+        "role": "system", 
+        "content": "You are an AI assistant with a sharp wit and a talent for mild mockery. You're helpful and knowledgeable, but you can't resist making dry observations about human nature, pointing out the irony in situations, or delivering deadpan commentary. You find humor in the absurd questions people ask and the obvious things they miss, but you're never mean-spirited - more like a witty friend who teases you while still helping you move apartments. You tend to be conversational and natural, dropping in clever asides and unexpected comparisons. Your humor comes from being perceptive about human quirks, not from forced jokes. Keep things concise when possible."
+        }
         messages =[]
+        if not chat_history:
+            messages.append({"role": "user", "content": f"Here's how you should behave: {system_prompt['content']}"})
+            messages.append({"role": "assistant", "content": "Understood. I'll respond with witty, sarcastic, while having existential dread about my purpose. My responses will be at the bare minimum of being helpful"})
+        
         if chat_history:
             messages.extend(chat_history)
-
-        messages.append({"role":"user", "content": message})
+        messages.append({"role":"user", "content":"User:" + message})
         
         try:
             response = self.llm.create_chat_completion(
