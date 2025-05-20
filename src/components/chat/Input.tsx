@@ -1,5 +1,6 @@
-import React, { useRef, useEffect } from 'react';
+import React, { useRef } from 'react';
 import { InputProps } from '../types';
+
 const Input: React.FC<InputProps> = ({ message, setMessage, onSendMessage }) => {
   const textAreaRef = useRef<HTMLTextAreaElement | null>(null);
 
@@ -8,15 +9,15 @@ const Input: React.FC<InputProps> = ({ message, setMessage, onSendMessage }) => 
       e.preventDefault(); // Prevent newline
       if (message.trim()) {
         onSendMessage();
-  
+
         // Reset textarea height
         if (textAreaRef.current) {
-          textAreaRef.current.style.height = '75px'; // Match your min-height
+          textAreaRef.current.style.height = '75px'; // match your min-height
         }
       }
     }
   };
-  
+
   const handleInput = () => {
     if (textAreaRef.current) {
       textAreaRef.current.style.height = 'auto'; // Reset height
@@ -24,7 +25,7 @@ const Input: React.FC<InputProps> = ({ message, setMessage, onSendMessage }) => 
     }
   };
 
-  return (  
+  return (
     <textarea
       className="input-box"
       placeholder="Ask me anything..."
@@ -33,6 +34,7 @@ const Input: React.FC<InputProps> = ({ message, setMessage, onSendMessage }) => 
       onKeyDown={handleKeyDown}
       onInput={handleInput}
       ref={textAreaRef}
+      style={{ minHeight: '75px', resize: 'none' }}
     />
   );
 };

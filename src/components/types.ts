@@ -1,7 +1,7 @@
 export interface MessageProps {
-    role: 'user' | 'model';
-    content: string;
-    timestamp?: number
+  role: 'user' | 'model';
+  content: string;
+  timestamp?: number;
 }
 
 export interface InputProps {
@@ -11,11 +11,12 @@ export interface InputProps {
 }
 
 export interface UserChatProps {
-    messages:string[];
+  messages: MessageProps[];
 }
+
 export interface IConversation {
   id?: number;
   title: string;
-  timestamp: number; 
+  timestamp: number;
   messages: MessageProps[];
 }
