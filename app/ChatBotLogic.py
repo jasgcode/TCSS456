@@ -1,6 +1,12 @@
 import torch
 from llama_cpp import Llama
 from typing import Optional, Dict, List
+from huggingface_hub import login
+
+huggingface_token = "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"
+login(token = huggingface_token)
+
+
 class ChatBot:
     def __init__(self, llm_model:str = "gemma-3-1b-it-q4_0.gguf",
                  model_repo_id="google/gemma-3-1b-it-qat-q4_0-gguf", chat_format="gemma" , 
