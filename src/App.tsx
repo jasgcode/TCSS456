@@ -61,7 +61,7 @@ function App(): React.JSX.Element {
     <div style={{ display: 'flex', height: '100vh' }}>
       <div
         style={{
-          flex: 1,
+          width: '600px',
           backgroundColor: '#222',
           display: 'flex',
           justifyContent: 'center',
@@ -73,7 +73,7 @@ function App(): React.JSX.Element {
 
       <div
         style={{
-          flex: 2,
+          width: '800px',
           display: 'flex',
           flexDirection: 'column',
           padding: '1rem',
