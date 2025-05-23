@@ -1,4 +1,4 @@
-import { app, BrowserWindow } from 'electron';
+import { app, BrowserWindow, Menu } from 'electron';
 import path from 'node:path';
 import started from 'electron-squirrel-startup';
 
@@ -7,9 +7,11 @@ if (started) {
   app.quit();
 }
 
+let mainWindow: BrowserWindow | null = null;
+
 const createWindow = () => {
   // Create the browser window.
-  const mainWindow = new BrowserWindow({
+  mainWindow = new BrowserWindow({
     width: 1024,
     height: 800,
     minWidth: 800,
@@ -28,6 +30,47 @@ const createWindow = () => {
 
   // Open the DevTools.
   mainWindow.webContents.openDevTools();
+
+  // Create application menu with Survey item
+  const menuTemplate = [
+    {
+      label: 'File',
+      submenu: [
+        {
+          label: 'Survey',
+          click: () => {
+            if (!mainWindow) return;
+
+            const surveyWindow = new BrowserWindow({
+              width: 700,
+              height: 900,
+              parent: mainWindow,
+              modal: true,
+              resizable: false,
+              webPreferences: {
+                nodeIntegration: false,
+                contextIsolation: true,
+              },
+            });
+
+            // Load your Microsoft Forms survey URL here
+            surveyWindow.loadURL('https://docs.google.com/forms/d/e/1FAIpQLSePsV4irBPbRKbMHdhhtRkUs9zmk1lA79C9JQMWVdRM5HJLrA/viewform?usp=header');
+
+            // Optional: uncomment to open DevTools for the survey window
+            // surveyWindow.webContents.openDevTools();
+
+            surveyWindow.on('closed', () => {
+              // Optional cleanup here
+            });
+          },
+        },
+        { role: 'quit' },
+      ],
+    },
+  ];
+
+  const menu = Menu.buildFromTemplate(menuTemplate);
+  Menu.setApplicationMenu(menu);
 };
 
 // This method will be called when Electron has finished
@@ -45,12 +88,9 @@ app.on('window-all-closed', () => {
 });
 
 app.on('activate', () => {
-  // On OS X it's common to re-create a window in the app when the
+  // On macOS it's common to re-create a window in the app when the
   // dock icon is clicked and there are no other windows open.
   if (BrowserWindow.getAllWindows().length === 0) {
     createWindow();
   }
 });
-
-// In this file you can include the rest of your app's specific main process
-// code. You can also put them in separate files and import them here.
