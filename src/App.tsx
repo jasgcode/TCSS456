@@ -101,9 +101,9 @@ function App(): React.JSX.Element {
         ) : (
           <div className="welcome-screen">
             <div className="welcome-content">
-              <h1 className="welcome-title">Welcome to AI Chat</h1>
+              <h1 className="welcome-title">Talk to me bro...</h1>
               <p className="welcome-subtitle">
-                Start a new conversation to begin chatting
+                Start a new conversation to begin chatting with me dawg
               </p>
               <button
                 onClick={handleNewConversation}
