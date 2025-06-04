@@ -9,10 +9,33 @@ import { FuseV1Options, FuseVersion } from '@electron/fuses';
 
 const config: ForgeConfig = {
   packagerConfig: {
-    asar: true,
-  },
-  rebuildConfig: {},
-  makers: [new MakerSquirrel({}), new MakerZIP({}, ['darwin']), new MakerRpm({}), new MakerDeb({})],
+      asar: true,
+      // Sets the application icon for Windows (.ico) and macOS (.icns)
+      icon: 'src/assets/chiikawa', // Note: no file extension
+    },
+    rebuildConfig: {},
+    makers: [
+      // Windows Squirrel installer
+      new MakerSquirrel({
+        // Sets the icon for the setup.exe installer
+        setupIcon: 'src/assets/chiikawa.ico'
+      }), 
+      new MakerZIP({}, ['darwin']), 
+      // Red Hat/Fedora Linux package
+      new MakerRpm({
+        options: {
+          // Sets the icon for the Linux package manager
+          icon: 'src/assets/chiikawa.png'
+        }
+      }), 
+      // Debian/Ubuntu Linux package
+      new MakerDeb({
+        options: {
+          // Sets the icon for the Linux package manager
+          icon: 'src/assets/chiikawa.png'
+        }
+      })
+    ], 
   plugins: [
     new VitePlugin({
       // `build` can specify multiple entry builds, which can be Main process, Preload scripts, Worker process, etc.

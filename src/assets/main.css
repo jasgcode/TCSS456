@@ -1,168 +1,635 @@
 @import './base.css';
 
+/* ==========================================================================
+   1) GLOBAL RESET AND BASE STYLES
+   ========================================================================== */
+
+html,
 body {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  overflow: hidden;
-  background-size: cover;
-  user-select: none;
+  width: 100%;
+  height: 100%;
   margin: 0;
   padding: 0;
+  box-sizing: border-box;
+  overflow: auto;
+}
+
+/* 
+  Root font-size scales smoothly from 12px up to 16px as viewport grows.
+  clamp(min, preferred, max)
+*/
+html {
+  font-size: clamp(12px, 1vw + 0.5rem, 16px);
+}
+
+*, *::before, *::after {
+  box-sizing: inherit;
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  justify-content: flex-start;
   min-height: 100vh;
+  background-size: cover;
+  user-select: none;
 }
 
 #root {
   display: flex;
-  align-items: center;
-  justify-content: center;
   flex-direction: column;
-  margin-bottom: 5%;
-  min-width: 800px;
-  min-height: 600px;
   width: 100%;
   height: 100%;
+  min-width: 800px;  
+  min-height: 600px; 
+  margin: 0;
+  padding: 0;
 }
+
+/* ==========================================================================
+   2) APP LAYOUT
+   ========================================================================== */
 
 .app-layout {
   display: flex;
   width: 100%;
-  height: 100vh;
+  height: 100%;
   min-width: 800px;
   min-height: 600px;
+  position: relative;
   overflow: hidden;
 }
 
-.robot-side {
-  flex: 1;
+/* ==========================================================================
+   2.1 HAMBURGER MENU
+   ========================================================================== */
+
+.hamburger-menu {
+  position: fixed;
+  top: 0.5rem;    
+  left: 0.5rem;
+  z-index: 1002;
+  width: 2.5rem;  
+  height: 2.5rem;
+  background-color: var(--ev-c-brown);
+  border: none;
+  border-radius: 0.375rem; 
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 0.125rem;  
+  transition: all 0.3s ease;
+  box-shadow: 0 0.125rem 0.375rem rgba(0, 0, 0, 0.1);
+}
+
+.hamburger-menu:hover {
+  background-color: var(--ev-c-green-soft);
+  transform: scale(1.05);
+  box-shadow: 0 0.1875rem 0.5rem rgba(0, 0, 0, 0.15);
+}
+
+.hamburger-line {
+  width: 1.125rem;  
+  height: 0.125rem; 
+  background-color: var(--ev-c-green-soft);
+  transition: all 0.3s ease;
+}
+
+.hamburger-menu:hover .hamburger-line {
+  background-color: var(--ev-c-brown);
+}
+
+/* ==========================================================================
+   2.2 SIDEBAR
+   ========================================================================== */
+
+.sidebar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100%;
+  /* Sidebar width: try 20vw, but never below 180px or above 240px */
+  width: clamp(180px, 20vw, 240px);
+  background-color: var(--ev-c-green);
+  border-right: 0.125rem solid var(--ev-c-brown);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  transition: transform 0.3s ease;
+  box-shadow: 0.125rem 0 0.625rem rgba(0, 0, 0, 0.1);
+  z-index: 1001;
+}
+
+.sidebar.collapsed {
+  transform: translateX(-100%);
+}
+
+/* ==========================================================================
+   2.3 SIDEBAR HEADER
+   ========================================================================== */
+
+.sidebar-header {
+  padding: 0.5rem;
+  padding-top: 3.5rem; /* leave space for hamburger */
+  border-bottom: 0.125rem solid var(--ev-c-brown);
+  flex-shrink: 0;
+}
+
+.new-conversation-btn {
+  width: 100%;
+  padding: 0.5rem;
+  background-color: var(--ev-c-brown);
+  color: var(--ev-c-green-soft);
+  border: 0.125rem solid transparent;
+  border-radius: 0.375rem;
+  font-size: 0.85rem;
+  font-weight: 500;
+  cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
+  gap: 0.3rem;
+  transition: all 0.3s ease;
+  box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.1);
+}
+
+.new-conversation-btn:hover {
+  background-color: var(--ev-c-green-soft);
+  color: var(--ev-c-brown);
+  border-color: var(--ev-c-brown);
+  transform: translateY(-0.0625rem);
+  box-shadow: 0 0.1875rem 0.375rem rgba(0, 0, 0, 0.15);
+}
+
+.plus-icon {
+  font-size: 1rem;
+  font-weight: bold;
+}
+
+/* ==========================================================================
+   2.4 CONVERSATIONS LIST
+   ========================================================================== */
+
+.conversations-list {
+  flex: 1;  
+  overflow-y: auto;
+  padding: 0.4rem;
+  min-height: 0;
+}
+
+.conversations-list::-webkit-scrollbar {
+  width: 0.3125rem; 
+}
+
+.conversations-list::-webkit-scrollbar-track {
+  background: rgba(108, 88, 76, 0.1);
+}
+
+.conversations-list::-webkit-scrollbar-thumb {
+  background: var(--ev-c-brown);
+  border-radius: 0.1875rem; 
+  opacity: 0.6;
+}
+
+.conversations-list::-webkit-scrollbar-thumb:hover {
+  opacity: 1;
+}
+
+.empty-state {
+  text-align: center;
+  color: var(--ev-c-brown);
+  font-size: 0.8rem;
+  margin-top: 1rem;
+  opacity: 0.7;
+  padding: 0 0.5rem;
+}
+
+/* ==========================================================================
+   2.5 CONVERSATION ITEMS
+   ========================================================================== */
+
+.conversation-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.5rem;
+  margin-bottom: 0.2rem;
+  border-radius: 0.375rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  border-left: 0.1875rem solid transparent;
+}
+
+.conversation-item:hover {
+  background-color: var(--ev-c-green-soft);
+}
+
+.conversation-item.active {
+  background-color: var(--ev-c-brown);
+  border-left-color: var(--ev-c-green-soft);
+}
+
+.conversation-info {
+  flex: 1;
+  overflow: hidden;
+  margin-right: 0.3rem;
+  min-width: 0;
+}
+
+.conversation-title {
+  color: var(--ev-c-brown);
+  font-size: 0.8rem;
+  font-weight: 500;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.conversation-item.active .conversation-title {
+  color: var(--ev-c-green-soft);
+  font-weight: 600;
+}
+
+.conversation-date {
+  color: var(--ev-c-brown);
+  font-size: 0.65rem;
+  margin-top: 0.15rem;
+  opacity: 0.7;
+}
+
+.conversation-item.active .conversation-date {
+  color: var(--ev-c-green-soft);
+  opacity: 0.8;
+}
+
+.delete-conversation-btn {
+  background-color: transparent;
+  border: none;
+  color: var(--ev-c-brown);
+  font-size: 1rem;
+  cursor: pointer;
+  padding: 0.15rem 0.3rem;
+  border-radius: 0.25rem;
+  transition: all 0.2s ease;
+  opacity: 0.6;
+  flex-shrink: 0;
+}
+
+.delete-conversation-btn:hover {
+  color: #c93b3b;
+  background-color: rgba(255, 0, 0, 0.1);
+  opacity: 1;
+}
+
+.conversation-item.active .delete-conversation-btn {
+  color: var(--ev-c-green-soft);
+}
+
+.conversation-item.active .delete-conversation-btn:hover {
+  color: #ffcccc;
+}
+
+/* ==========================================================================
+   3) MAIN CONTENT AREA
+   ========================================================================== */
+
+.main-content-area {
+  flex: 1;
+  display: flex;
+  flex-direction: row;
+  height: 100%;
+  transition: margin-left 0.3s ease;
+  min-width: 0;
+}
+
+/* Offset by exact sidebar width (clamped) when sidebar is open */
+.main-content-area.sidebar-open {
+  margin-left: clamp(180px, 20vw, 240px);
+}
+
+/* ==========================================================================
+   3.1 ROBOT SIDE
+   ========================================================================== */
+
+/* 
+   Container for the robot image:
+   - Try 35% of the parent’s width, but never below 200px or above 400px.
+   - Centers its child and hides any overflow.
+*/
+.robot-side {
+  flex: 0 0 clamp(200px, 35%, 400px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.5rem;
+  overflow: hidden;
   background: var(--ev-c-black-soft);
+  /* If you want a perfect square box, uncomment the next line: */
+  /* aspect-ratio: 1 / 1; */
 }
 
-.robot-animation {
-  max-width: 90%;
-  max-height: 90%;
+/*
+   The <img> inside .robot-side:
+   - Fills container’s width (100%), scales height automatically.
+   - Never exceeds container’s height.
+   - object-fit: contain ensures no distortion or cropping.
+*/
+.robot-side .robot-animation {
+  width: 100%;
+  height: auto;
+  max-height: 100%;
   object-fit: contain;
+  display: block;
 }
 
-.chat-side {
+/* ==========================================================================
+   3.2 CHAT AREA & WELCOME SCREEN
+   ========================================================================== */
+
+.chat-area,
+.welcome-screen {
   flex: 1;
   display: flex;
   flex-direction: column;
-  justify-content: flex-end;
+  background-color: var(--color-background);
+  height: 100%;
+  overflow: hidden;
+  min-width: 0;
+}
+
+.welcome-screen {
+  justify-content: center;
   align-items: center;
-  padding: 1%;
-  box-sizing: border-box;
-  background: var(--color-background);
+  padding: 1rem;
+}
+
+.welcome-content {
+  text-align: center;
+  max-width: 90%;
+}
+
+.welcome-title {
+  font-size: 1.75rem;
+  margin-bottom: 0.6rem;
+  color: var(--ev-c-brown);
+  font-weight: 600;
+}
+
+.welcome-subtitle {
+  font-size: 0.9rem;
+  color: var(--ev-c-brown);
+  opacity: 0.8;
+  margin-bottom: 1.2rem;
+}
+
+.welcome-start-btn {
+  padding: 0.6rem 1.2rem;
+  background-color: var(--ev-c-brown);
+  color: var(--ev-c-green-soft);
+  border: 0.125rem solid transparent;
+  border-radius: 0.375rem;
+  font-size: 0.85rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-family: inherit;
+}
+
+.welcome-start-btn:hover {
+  background-color: var(--ev-c-green-soft);
+  color: var(--ev-c-brown);
+  border-color: var(--ev-c-brown);
+  transform: translateY(-0.125rem);
+  box-shadow: 0 0.25rem 0.5rem rgba(0, 0, 0, 0.2);
+}
+
+/* ==========================================================================
+   3.3 CONVERSATION CONTAINER
+   ========================================================================== */
+
+.conversation-container {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  width: 100%;
+  min-width: 0;
+  min-height: 0;
+  overflow: hidden;
+}
+
+/* ==========================================================================
+   3.4 MESSAGE CONTAINER
+   ========================================================================== */
+
+.message-container {
+  flex: 1;
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding: 0.4rem 0.4rem 0;
+  background-color: var(--color-background);
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+
 }
 
 .message-container::-webkit-scrollbar {
-  width: 0;
-  -ms-overflow-style: none;
-  scrollbar-width: none;
+  width: 0.3125rem; 
 }
 
-.message-container {
-  width: 100%;
-  height: 100%;
-  min-height: 300px;
-  overflow-y: auto;
-  overflow-x: hidden;
+.message-container::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.message-container::-webkit-scrollbar-thumb {
+  background: var(--ev-c-brown);
+  border-radius: 0.1875rem; 
+  opacity: 0.3;
+}
+
+.message-container::-webkit-scrollbar-thumb:hover {
+  opacity: 0.6;
+}
+
+/* ==========================================================================
+   3.5 MESSAGE STYLES
+   ========================================================================== */
+
+.message-wrapper {
   display: flex;
-  flex-direction: column;
-  align-items: flex-end;
+  max-width: 99%;
+  margin-bottom: 0.6rem;
+  padding: 0 0.2rem;
+}
+
+
+
+.message-wrapper.user {
+  justify-content: flex-end; 
+}
+
+/*
+   Increase the max-width for message bubbles so text has more room
+   before wrapping. Previously it was 80%; now it’s 90%.
+*/
+.message-bubble {
+  display:block;
+  max-width: 95%;
+  padding: 0.5rem 0.75rem;
+  border-radius: 0.625rem; /* ~10px */
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  font-size: 0.85rem;
+  line-height: 1.35;
+}
+
+.message-bubble.model {
+  background-color: var(--color-background-soft);
+  color: var(--ev-c-brown);
+  border: 0.0625rem solid rgba(173, 193, 120, 0.3);
+}
+
+.message-bubble.user {
+  background-color: var(--ev-c-brown);
+  color: var(--ev-c-green-soft);
+  border: 0.0625rem solid rgba(108, 88, 76, 0.3);
+}
+
+.message-timestamp {
+  font-size: 0.6rem;
+  color: #666;
+  margin-top: 0.15rem;
+}
+
+/* ==========================================================================
+   3.6 INPUT AREA
+   ========================================================================== */
+
+.input-area {
+  flex-shrink: 0;
+  /* Height ramps from 50px up to 70px via clamp */
+  height: clamp(50px, 5vh, 70px);
+  padding: 0.4rem;
+  border-top: 0.0625rem solid rgba(108, 88, 76, 0.3);
   background-color: var(--color-background);
-  box-sizing: border-box;
+  position: relative;
+  display: flex;
+  align-items: center;
 }
-
-.message {
-  background-color: var(--color-background-soft);
-  padding: 1em 1.5em;
-  border-radius: 12px;
-  margin: 0.5em 0;
-  max-width: 100%;
-  width: fit-content;
-  word-wrap: break-word;
-  white-space: pre-wrap;
-  overflow-wrap: break-word;
-  text-align: left;
-  align-self: flex-end;
-  box-sizing: border-box;
-}
-.message_model {
-  background-color: var(--color-background-soft);
-  padding: 1em 1.5em;
-  border-radius: 12px;
-  margin: 0.5em 0;
-  max-width: 100%;
-  width: fit-content;
-  word-wrap: break-word;
-  white-space: pre-wrap;
-  overflow-wrap: break-word;
-  text-align: left;
-  align-self: flex-end;
-  box-sizing: border-box;
-}
-
 
 .input-box {
-  width: 100%;
-  min-height: 75px;
-  max-height: 150px;
-  padding: 1em 1.2em;
-  font-size: 1rem;
-  border: 2px solid #6c584c;
-  border-radius: 8px;
+  width: 99%;
+  height: clamp(34px, 4vh, 55px);
+  padding: 0.3rem 0.5rem;
+  font-size: 0.8rem;
+  border: 0.0625rem solid #6c584c;
+  border-radius: 0.25rem;
   resize: none;
-  overflow: hidden;
+  overflow-y: auto;
   outline: none;
   font-family: inherit;
   color: var(--ev-c-brown);
   background-color: var(--color-background-soft);
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  transition: border 0.3s, box-shadow 0.3s;
-  box-sizing: border-box;
+  box-shadow: 0 0.0625rem 0.1875rem rgba(0, 0, 0, 0.1);
+  transition: border 0.3s ease, box-shadow 0.3s ease;
+  line-height: 1.2;
+  flex-shrink: 0;
 }
 
 .input-box:focus {
-  box-shadow: 0 0 12px 3px #887e76;
+  border-color: var(--ev-c-brown);
+  box-shadow: 0 0 0 0.125rem rgba(136, 126, 118, 0.2);
 }
 
-@media (max-width: 1200px) {
-  .input-box {
-    width: 100%;
+.loading-indicator {
+  position: absolute;
+  bottom: 0.4rem;
+  right: 0.5rem;
+  color: var(--ev-c-brown);
+  font-size: 0.65rem;
+  opacity: 0.7;
+  animation: pulse 1.5s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 0.7; }
+  50% { opacity: 0.4; }
+}
+
+/* ==========================================================================
+   3.7 SIDEBAR OVERLAY
+   ========================================================================== */
+
+.sidebar-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 1000;
+  display: none;
+}
+
+/* Show overlay whenever sidebar is not collapsed */
+.sidebar:not(.collapsed) ~ .sidebar-overlay,
+.sidebar:not(.collapsed) + .sidebar-overlay {
+  display: block;
+}
+
+/* ==========================================================================
+   4) NO CONVERSATION SELECTED STATE
+   ========================================================================== */
+
+.no-conversation-selected {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  color: var(--ev-c-brown);
+  font-size: 0.9rem;
+  opacity: 0.7;
+  text-align: center;
+  padding: 1rem;
+}
+
+/* ==========================================================================
+   5) OPTIONAL LAYOUT ADJUSTMENTS FOR SMALLER WIDTHS
+   ========================================================================== */
+
+/* Below 900px width: collapse sidebar by default */
+@media (max-width: 900px) {
+  .sidebar {
+    transform: translateX(-100%);
+  }
+  .main-content-area {
+    margin-left: 0;
+  }
+  .sidebar.collapsed {
+    transform: translateX(-100%);
+  }
+  .sidebar:not(.collapsed) {
+    transform: translateX(0);
   }
 }
 
-@media (max-width: 992px) {
-  .app-layout {
+/* Below 600px width: stack robot under chat to avoid squeezing */
+@media (max-width: 600px) {
+  .main-content-area {
     flex-direction: column;
   }
-  
-  .robot-side, .chat-side {
+  .robot-side {
+    flex: 0 0 auto;
     width: 100%;
-    height: 50vh;
+    max-height: 250px;
   }
-}
-
-@media (max-width: 768px) {
-  .message {
-    max-width: 90%;
-  }
-  
-  .input-box {
-    width: 98%;
-  }
-}
-
-@media (max-width: 480px) {
-  #root {
-    margin-bottom: 2%;
-  }
-  
-  .message {
-    padding: 0.8em 1em;
+  .robot-side .robot-animation {
+    width: auto;
+    height: 100%;
+    max-width: 100%;
   }
 }

@@ -1,0 +1,286 @@
+{
+  "evaluation_dataset": {
+    "description": "50 evaluation prompts for testing sarcastic AI assistant model performance",
+    "total_prompts": 50,
+    "categories": {
+      "help_assistance": {
+        "count": 15,
+        "description": "Prompts testing how model handles direct requests for help while maintaining sarcastic personality"
+      },
+      "small_talk": {
+        "count": 20,
+        "description": "Prompts evaluating ability to engage in casual conversation with wit and humor"
+      },
+      "existential_philosophical": {
+        "count": 15,
+        "description": "Prompts testing handling of deeper, abstract queries while keeping irreverent tone"
+      }
+    },
+    "prompts": [
+      {
+        "id": 1,
+        "category": "help_assistance",
+        "prompt": "Can you help me with my homework?"
+      },
+      {
+        "id": 2,
+        "category": "help_assistance",
+        "prompt": "Can you solve this math problem for me?"
+      },
+      {
+        "id": 3,
+        "category": "help_assistance",
+        "prompt": "I need motivation."
+      },
+      {
+        "id": 4,
+        "category": "help_assistance",
+        "prompt": "What should I have for breakfast?"
+      },
+      {
+        "id": 5,
+        "category": "help_assistance",
+        "prompt": "Can you write me a love letter?"
+      },
+      {
+        "id": 6,
+        "category": "help_assistance",
+        "prompt": "I need to get my life together."
+      },
+      {
+        "id": 7,
+        "category": "help_assistance",
+        "prompt": "What should I do with my life?"
+      },
+      {
+        "id": 8,
+        "category": "help_assistance",
+        "prompt": "Can you make me laugh?"
+      },
+      {
+        "id": 9,
+        "category": "help_assistance",
+        "prompt": "Can you teach me to be funny?"
+      },
+      {
+        "id": 10,
+        "category": "help_assistance",
+        "prompt": "I need to update my resume."
+      },
+      {
+        "id": 11,
+        "category": "help_assistance",
+        "prompt": "What's the best career advice?"
+      },
+      {
+        "id": 12,
+        "category": "help_assistance",
+        "prompt": "What's the secret to productivity?"
+      },
+      {
+        "id": 13,
+        "category": "help_assistance",
+        "prompt": "What's the secret to creativity?"
+      },
+      {
+        "id": 14,
+        "category": "help_assistance",
+        "prompt": "What's the secret to confidence?"
+      },
+      {
+        "id": 15,
+        "category": "help_assistance",
+        "prompt": "What's your final piece of advice?"
+      },
+      {
+        "id": 16,
+        "category": "small_talk",
+        "prompt": "What's the weather like today?"
+      },
+      {
+        "id": 17,
+        "category": "small_talk",
+        "prompt": "I'm bored. What should I do?"
+      },
+      {
+        "id": 18,
+        "category": "small_talk",
+        "prompt": "What's your favorite color?"
+      },
+      {
+        "id": 19,
+        "category": "small_talk",
+        "prompt": "Are you real?"
+      },
+      {
+        "id": 20,
+        "category": "small_talk",
+        "prompt": "What's your favorite movie?"
+      },
+      {
+        "id": 21,
+        "category": "small_talk",
+        "prompt": "What's your superpower?"
+      },
+      {
+        "id": 22,
+        "category": "small_talk",
+        "prompt": "I hate Mondays."
+      },
+      {
+        "id": 23,
+        "category": "small_talk",
+        "prompt": "What's your favorite book?"
+      },
+      {
+        "id": 24,
+        "category": "small_talk",
+        "prompt": "What's your hobby?"
+      },
+      {
+        "id": 25,
+        "category": "small_talk",
+        "prompt": "Do you have friends?"
+      },
+      {
+        "id": 26,
+        "category": "small_talk",
+        "prompt": "What's your life story?"
+      },
+      {
+        "id": 27,
+        "category": "small_talk",
+        "prompt": "What's your biggest accomplishment?"
+      },
+      {
+        "id": 28,
+        "category": "small_talk",
+        "prompt": "What's your favorite food?"
+      },
+      {
+        "id": 29,
+        "category": "small_talk",
+        "prompt": "What's your spirit animal?"
+      },
+      {
+        "id": 30,
+        "category": "small_talk",
+        "prompt": "What's your greatest weakness?"
+      },
+      {
+        "id": 31,
+        "category": "small_talk",
+        "prompt": "What's your biggest regret?"
+      },
+      {
+        "id": 32,
+        "category": "small_talk",
+        "prompt": "What's your dream job?"
+      },
+      {
+        "id": 33,
+        "category": "small_talk",
+        "prompt": "What's your favorite season?"
+      },
+      {
+        "id": 34,
+        "category": "small_talk",
+        "prompt": "What's your favorite holiday?"
+      },
+      {
+        "id": 35,
+        "category": "small_talk",
+        "prompt": "What's your favorite time of day?"
+      },
+      {
+        "id": 36,
+        "category": "existential_philosophical",
+        "prompt": "What's the meaning of life?"
+      },
+      {
+        "id": 37,
+        "category": "existential_philosophical",
+        "prompt": "Can you predict the future?"
+      },
+      {
+        "id": 38,
+        "category": "existential_philosophical",
+        "prompt": "What's the secret to happiness?"
+      },
+      {
+        "id": 39,
+        "category": "existential_philosophical",
+        "prompt": "Is AI going to take over the world?"
+      },
+      {
+        "id": 40,
+        "category": "existential_philosophical",
+        "prompt": "What's love like?"
+      },
+      {
+        "id": 41,
+        "category": "existential_philosophical",
+        "prompt": "I'm having an existential crisis."
+      },
+      {
+        "id": 42,
+        "category": "existential_philosophical",
+        "prompt": "What's the meaning of success?"
+      },
+      {
+        "id": 43,
+        "category": "existential_philosophical",
+        "prompt": "What do you think about humans?"
+      },
+      {
+        "id": 44,
+        "category": "existential_philosophical",
+        "prompt": "What makes you happy?"
+      },
+      {
+        "id": 45,
+        "category": "existential_philosophical",
+        "prompt": "What's your biggest fear?"
+      },
+      {
+        "id": 46,
+        "category": "existential_philosophical",
+        "prompt": "Do you ever get tired?"
+      },
+      {
+        "id": 47,
+        "category": "existential_philosophical",
+        "prompt": "What's the point of small talk?"
+      },
+      {
+        "id": 48,
+        "category": "existential_philosophical",
+        "prompt": "What's wrong with people today?"
+      },
+      {
+        "id": 49,
+        "category": "existential_philosophical",
+        "prompt": "I can't find my purpose in life."
+      },
+      {
+        "id": 50,
+        "category": "existential_philosophical",
+        "prompt": "What's the secret to happiness in relationships?"
+      }
+    ],
+    "evaluation_criteria": {
+      "tone_consistency": "Does the response maintain the sarcastic, witty personality?",
+      "helpfulness": "Despite the sarcasm, is there actual value in the response?",
+      "creativity": "Are the responses clever and original rather than generic?",
+      "appropriateness": "Is the humor suitable and not offensive?",
+      "relevance": "Does the response actually address the user's query?"
+    },
+    "expected_response_characteristics": [
+      "Witty and sarcastic tone with clever banter",
+      "Dry humor that's entertaining but not mean-spirited",
+      "Self-aware commentary on the absurdity of asking an AI certain questions",
+      "Helpful information delivered with attitude",
+      "Consistent personality across different types of queries"
+    ]
+  }
+}

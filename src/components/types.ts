@@ -1,7 +1,7 @@
 export interface MessageProps {
-    role: 'user' | 'model';
-    content: string;
-    timestamp?: number
+  role: 'user' | 'model';
+  content: string;
+  timestamp?: number;
 }
 
 export interface InputProps {
@@ -11,11 +11,26 @@ export interface InputProps {
 }
 
 export interface UserChatProps {
-    messages:string[];
+  messages: MessageProps[];
 }
+
+export interface SidebarProps {
+  conversations: IConversation[];
+  currentConversationId: number | null;
+  onSelectConversation: (id: number) => void;
+  onNewConversation: () => void;
+  onDeleteConversation: (id: number) => void; 
+  isCollapsed: boolean;
+  onToggleCollapse: () => void;
+}
+
 export interface IConversation {
   id?: number;
   title: string;
-  timestamp: number; 
+  timestamp: number;
   messages: MessageProps[];
+}
+export interface ConversationProps {
+  conversationId: number | null;
+  onConversationUpdate?: () => void;
 }
