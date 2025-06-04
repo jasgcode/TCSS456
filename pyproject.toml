@@ -11,4 +11,6 @@ dependencies = [
     "transformers>=4.51.3",
     "torch>=2.6.0",
     "pydantic>=2.10",
+    "uvicorn>=0.34.3",
+    "asyncio>=3.4.3",
 ]

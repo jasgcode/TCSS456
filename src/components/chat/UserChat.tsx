@@ -1,44 +1,34 @@
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
 import type { UserChatProps } from '../types';
 
 const UserChat: React.FC<UserChatProps> = ({ messages }) => {
+  const messagesEndRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+  }, [messages]);
+
   return (
-    <div style={{ flex: 1, overflowY: 'auto', paddingBottom: '1rem' }}>
-      {messages.map(({ role, content, timestamp }, index) => (
-        <div
-          key={index}
-          style={{
-            marginBottom: '1rem',
-            textAlign: role === 'user' ? 'right' : 'left',
-          }}
-        >
-          <div
-            style={{
-              display: 'inline-block',
-              backgroundColor: role === 'user' ? '#4a90e2' : '#eee',
-              color: role === 'user' ? 'white' : 'black',
-              padding: '0.5rem 1rem',
-              borderRadius: '12px',
-              maxWidth: '70%',
-              whiteSpace: 'pre-wrap',
-            }}
-          >
-            {content}
+    <>
+      {messages.map(({ role, content, timestamp }, index) => {
+        const wrapperClass = role === 'user' ? 'message-wrapper user' : 'message-wrapper model';
+        const bubbleClass  = role === 'user' ? 'message-bubble user' : 'message-bubble model';
+
+        return (
+          // The anonymous div that was here has been removed.
+          // The .message-bubble and .message-timestamp are now direct children of the wrapper.
+          <div key={index} className={wrapperClass}>
+            <div className={bubbleClass}>{content}</div>
+            {timestamp && (
+              <div className="message-timestamp">
+                {new Date(timestamp).toLocaleTimeString()}
+              </div>
+            )}
           </div>
-          {timestamp && (
-            <div
-              style={{
-                fontSize: '0.7rem',
-                color: '#666',
-                marginTop: '0.25rem',
-              }}
-            >
-              {new Date(timestamp).toLocaleTimeString()}
-            </div>
-          )}
-        </div>
-      ))}
-    </div>
+        );
+      })}
+      <div ref={messagesEndRef} />
+    </>
   );
 };
 

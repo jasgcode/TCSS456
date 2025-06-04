@@ -1,86 +1,119 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Robot from './components/Avatar/Robot';
-import UserChat from './components/chat/UserChat';
-import Input from './components/chat/Input';
-import type { MessageProps } from './components/types';
+import Sidebar from './components/bar/Sidebar';
+import Conversation from './components/bar/Conversation';
+import { getAllConversations, startNewConversation, deleteConversation } from './utils';
+import type { IConversation, MessageProps } from './components/types';
 
 function App(): React.JSX.Element {
-  const [messages, setMessages] = useState<MessageProps[]>([]);
-  const [message, setMessage] = useState('');
+  const [conversations, setConversations] = useState<IConversation[]>([]);
+  const [currentConversationId, setCurrentConversationId] = useState<number | null>(null);
+  const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(true);
 
-  async function handleSendMessage(content: string) {
-    if (!content.trim()) return;
+  // Load all conversations on mount
+  useEffect(() => {
+    loadConversations();
+  }, []);
 
-    const userMessage: MessageProps = {
-      role: 'user',
-      content,
+  const loadConversations = async () => {
+    const allConversations = await getAllConversations();
+    setConversations(allConversations);
+    // If no conversation is selected, or the current one was deleted, clear selection
+    if (currentConversationId && !allConversations.some(conv => conv.id === currentConversationId)) {
+      setCurrentConversationId(null);
+    }
+  };
+
+  const handleNewConversation = async () => {
+    const initialMessage: MessageProps = {
+      role: 'model',
+      content: 'Hello! How can I help you today?',
       timestamp: Date.now(),
     };
 
-    // Add user message locally
-    setMessages((prev) => [...prev, userMessage]);
-    setMessage(''); // clear input
+    const newConversationId = await startNewConversation(
+      [initialMessage],
+      `Conversation ${new Date().toLocaleString()}`
+    );
 
-    try {
-      const response = await fetch('http://localhost:8000/api/v1/chat/', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          message: content,
-          history: messages.map(({ role, content }) => ({ role, content })),
-        }),
-      });
-
-      if (!response.ok) {
-        throw new Error(`Backend error: ${response.statusText}`);
-      }
-
-      const data = await response.json();
-
-      const modelMessage: MessageProps = {
-        role: 'model',
-        content: data.response,
-        timestamp: Date.now(),
-      };
-
-      setMessages((prev) => [...prev, modelMessage]);
-    } catch (error) {
-      console.error(error);
-      setMessages((prev) => [
-        ...prev,
-        {
-          role: 'model',
-          content: 'Error: Could not get response from assistant.',
-          timestamp: Date.now(),
-        },
-      ]);
+    if (newConversationId) {
+      await loadConversations();
+      setCurrentConversationId(newConversationId);
+      // Collapse sidebar after creating new conversation
+      setIsSidebarCollapsed(true);
     }
-  }
+  };
+
+  const handleSelectConversation = (id: number) => {
+    setCurrentConversationId(id);
+    // Collapse sidebar after selecting conversation
+    setIsSidebarCollapsed(true);
+  };
+
+  const handleConversationUpdate = () => {
+    // Reload conversations to update sidebar with any title changes
+    loadConversations();
+  };
+
+  const handleDeleteConversation = async (id: number) => {
+    const confirmDelete = window.confirm("Are you sure you want to delete this conversation?");
+    if (confirmDelete) {
+      await deleteConversation(id);
+      await loadConversations();
+      if (currentConversationId === id) {
+        setCurrentConversationId(null); // Deselect if the deleted conversation was active
+      }
+    }
+  };
+
+  const handleToggleSidebar = () => {
+    setIsSidebarCollapsed(!isSidebarCollapsed);
+  };
 
   return (
-    <div style={{ display: 'flex', height: '100vh' }}>
-      <div
-        style={{
-          width: '600px',
-          backgroundColor: '#222',
-          display: 'flex',
-          justifyContent: 'center',
-          alignItems: 'center',
-        }}
-      >
-        <Robot />
-      </div>
+    <div className="app-layout">
+      {/* Sidebar - always rendered, but with collapsed state */}
+      <Sidebar
+        conversations={conversations}
+        currentConversationId={currentConversationId}
+        onSelectConversation={handleSelectConversation}
+        onNewConversation={handleNewConversation}
+        onDeleteConversation={handleDeleteConversation}
+        isCollapsed={isSidebarCollapsed}
+        onToggleCollapse={handleToggleSidebar}
+      />
 
-      <div
-        style={{
-          width: '800px',
-          display: 'flex',
-          flexDirection: 'column',
-          padding: '1rem',
-        }}
-      >
-        <UserChat messages={messages} />
-        <Input message={message} setMessage={setMessage} onSendMessage={() => handleSendMessage(message)} />
+      {/* Main Content Area - Add sidebar-open class when sidebar is visible */}
+      <div className={`main-content-area ${!isSidebarCollapsed ? 'sidebar-open' : ''}`}>
+        {/* Robot Avatar Display - Always visible */}
+        <div className="robot-side">
+          <Robot />
+        </div>  
+
+        {/* Conversation Display or Welcome Screen */}
+        {currentConversationId ? (
+          <div className="chat-area">
+            <Conversation
+              conversationId={currentConversationId}
+              onConversationUpdate={handleConversationUpdate}
+            />
+          </div>
+        ) : (
+          <div className="welcome-screen">
+            <div className="welcome-content">
+              <h1 className="welcome-title">Welcome to AI Chat</h1>
+              <p className="welcome-subtitle">
+                Start a new conversation to begin chatting
+              </p>
+              <button
+                onClick={handleNewConversation}
+                className="welcome-start-btn"
+              >
+                Start New Conversation
+              </button>
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );

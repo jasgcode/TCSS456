@@ -1,7 +1,7 @@
 import { db } from './db'
 
 import type { IConversation, MessageProps } from './components/types';
-import Message from './components/chat/Message';
+
 
 export async function startNewConversation(
   initialMessages: MessageProps[],
@@ -64,7 +64,11 @@ export async function addMessageFetchResponse(
     let success = await db.transaction('rw', db.conversations, async() => {
       const conversation = await db.conversations.get(conversationId);
       if (conversation){
-        conversation.message.push(userMessage);
+        
+        if (!conversation.messages) {
+            conversation.messages = [];
+        }
+        conversation.messages.push(userMessage); // Changed from conversation.message
         conversation.timestamp = Date.now();
         await db.conversations.put(conversation);
         return true
@@ -97,13 +101,13 @@ export async function addMessageFetchResponse(
       conversationId: conversationId,
       history: historyForBackend
     }
-    const backendUrl='https://localhost:8000/api/v1/chat/';
+    const backendUrl='http://localhost:8000/api/v1/chat/';
     console.log("Sending to backend: ", payload)
     
     const response = await fetch(backendUrl,{
       method: 'POST',
       headers:{
-        'Content Type' : 'application/json',
+        'Content-Type' : 'application/json',
       },
       body: JSON.stringify(payload),
     });
@@ -131,7 +135,11 @@ export async function addMessageFetchResponse(
     success = await db.transaction('rw', db.conversations, async () =>{
       const conversation = await db.conversations.get(conversationId);
       if(conversation){
-        conversation.message.push(llmMessage);
+        // Ensure 'messages' is the correct property name as per IConversation
+        if (!conversation.messages) { // Initialize if undefined
+            conversation.messages = [];
+        }
+        conversation.messages.push(llmMessage); // Changed from conversation.message
         conversation.timestamp = Date.now();
         await db.conversations.put(conversation);
         return true;
@@ -182,5 +190,13 @@ export async function addModelMessageToConversation(
   }
 }
 
-
-
+export async function deleteConversation(id: number): Promise<boolean> {
+  try {
+    await db.conversations.delete(id);
+    console.log(`Conversation with ID ${id} deleted successfully.`);
+    return true;
+  } catch (error) {
+    console.error(`Failed to delete conversation with ID ${id}:`, error);
+    return false;
+  }
+}
