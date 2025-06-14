@@ -12,7 +12,70 @@ A lightweight, locally-hosted chatbot fine-tuned to deliver responses in a **sas
 - Johnny Garnica  
 
 ---
-
+## Project Structure
+```
+.
+├── app
+│   ├── ChatBotLogic.py
+│   ├── finetune_gemma_1bgguf.ipynb
+│   └── Serve.py
+├── Architecture_Overview.png
+├── architecture.PNG
+├── architectureyah.PNG
+├── demo
+│   └── Sassy P.A. Demo.mp4
+├── eval_dataset.json
+├── forge.config.ts
+├── forge.env.d.ts
+├── index.html
+├── my_dataset.json
+├── package-lock.json
+├── package.json
+├── project-structure.md
+├── pyproject.toml
+├── README.md
+├── setup.sh
+├── src
+│   ├── App.tsx
+│   ├── assets
+│   │   ├── base.css
+│   │   ├── chiikawa
+│   │   │   ├── IMG_1149.PNG
+│   │   │   ├── IMG_1150.PNG
+│   │   │   ├── IMG_1151.PNG
+│   │   │   ├── IMG_1152.PNG
+│   │   │   ├── IMG_1153.PNG
+│   │   │   ├── IMG_1154.PNG
+│   │   │   └── IMG_1155.PNG
+│   │   ├── chiikawa.icns
+│   │   ├── chiikawa.ico
+│   │   ├── chiikawa.PNG
+│   │   └── main.css
+│   ├── components
+│   │   ├── Avatar
+│   │   │   └── Robot.tsx
+│   │   ├── bar
+│   │   │   ├── Conversation.tsx
+│   │   │   └── Sidebar.tsx
+│   │   ├── chat
+│   │   │   ├── Input.tsx
+│   │   │   ├── Message.tsx
+│   │   │   └── UserChat.tsx
+│   │   └── types.ts
+│   ├── db.ts
+│   ├── index.css
+│   ├── main.ts
+│   ├── main.tsx
+│   ├── preload.ts
+│   ├── renderer.ts
+│   └── utils.ts
+├── tsconfig.json
+├── uv.lock
+├── vite.main.config.ts
+├── vite.preload.config.ts
+└── vite.renderer.config.ts
+```
+---
 ## Introduction
 
 **Use Case**: A sarcastic, character driven chatbot that provides humorous, passive aggressive answers perfect for users looking for a laugh or a more entertaining assistant experience.  
